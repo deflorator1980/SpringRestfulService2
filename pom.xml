@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>groupId</groupId>
-    <artifactId>SpringRestfulService</artifactId>
+    <artifactId>SpringRestfulService2</artifactId>
     <version>1</version>
 
     <parent>

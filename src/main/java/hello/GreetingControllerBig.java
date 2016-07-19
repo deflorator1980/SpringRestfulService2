@@ -1,6 +1,7 @@
 package hello;
 
 import dao.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,8 +32,10 @@ public class GreetingControllerBig {
 
     private String gnome_id;
 
-    ApplicationContext ac = new FileSystemXmlApplicationContext("db.xml");
-    TemplatesBig templates = (TemplatesBig) ac.getBean("TemplatesBig");
+//    ApplicationContext ac = new FileSystemXmlApplicationContext("db.xml");
+//    TemplatesBig templates = (TemplatesBig) ac.getBean("TemplatesBig");
+    @Autowired
+    TemplatesBig templates;
 
     private Node weapons;
     private Document doc;

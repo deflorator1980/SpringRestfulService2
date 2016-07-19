@@ -4,11 +4,13 @@ import dao.BaughtItemBig;
 import dao.MoneyBig;
 import dao.ValuesGnomeBig;
 import dao.ValuesItemBig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import javax.sql.DataSource;
@@ -19,18 +21,20 @@ import java.util.List;
  * Created by a on 01.11.15.
  */
 public class TemplatesBig {
+    @Autowired
     private DataSource dataSource;
+    @Autowired
     private JdbcTemplate jdbcTemplate;
-    private PlatformTransactionManager transactionManager;
+//    private PlatformTransactionManager transactionManager;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public void setTransactionManager(PlatformTransactionManager transactionManager) {
-        this.transactionManager = transactionManager;
-    }
+//    public void setTransactionManager(PlatformTransactionManager transactionManager) {
+//        this.transactionManager = transactionManager;
+//    }
 
     public ValuesGnomeBig showValuesGnome(String gnome_id) {
         String sql = "select gnome_name, gnome_money from gnomes where gnome_id = ?";
@@ -44,9 +48,10 @@ public class TemplatesBig {
     }
 
 
+    @Transactional
     public void buyItemNew(String gnome_id, String item_id, BigDecimal itemPrice) {
-        TransactionDefinition def = new DefaultTransactionDefinition();
-        TransactionStatus status = transactionManager.getTransaction(def);
+//        TransactionDefinition def = new DefaultTransactionDefinition();
+//        TransactionStatus status = transactionManager.getTransaction(def);
 
         try {
 
@@ -56,11 +61,11 @@ public class TemplatesBig {
             String sqlGetItem = "insert into sales (gnome_id, item_id, quantity) values (?, ?, 1);";
             jdbcTemplate.update(sqlGetItem, gnome_id, item_id);
 
-            transactionManager.commit(status);
+//            transactionManager.commit(status);
 
         } catch (DataAccessException dae) {
             System.out.println("Error in creating record, rolling back");
-            transactionManager.rollback(status);
+//            transactionManager.rollback(status);
             throw dae;
         }
 
@@ -76,9 +81,10 @@ public class TemplatesBig {
         return jdbcTemplate.query(sql, new MapperBaughtItemBig(), gnome_id);
     }
 
+    @Transactional
     public void buyItemOld(String gnome_id, String item_id, BigDecimal itemPrice) {
-        TransactionDefinition def = new DefaultTransactionDefinition();
-        TransactionStatus status = transactionManager.getTransaction(def);
+//        TransactionDefinition def = new DefaultTransactionDefinition();
+//        TransactionStatus status = transactionManager.getTransaction(def);
 
         try {
             String sqlIncQuantity = "update sales set quantity=quantity+1 where gnome_id=?"
@@ -89,18 +95,19 @@ public class TemplatesBig {
                     + " WHERE gnome_id=?";
             jdbcTemplate.update(sqlGiveMoney, itemPrice, gnome_id);
 
-            transactionManager.commit(status);
+//            transactionManager.commit(status);
 
         } catch (DataAccessException dae) {
             System.out.println("Error in creating record, rolling back");
-            transactionManager.rollback(status);
+//            transactionManager.rollback(status);
             throw dae;
         }
     }
 
+    @Transactional
     public void sellItemLast(String gnome_id, String item_id, BigDecimal itemPrice) {
-        TransactionDefinition def = new DefaultTransactionDefinition();
-        TransactionStatus status = transactionManager.getTransaction(def);
+//        TransactionDefinition def = new DefaultTransactionDefinition();
+//        TransactionStatus status = transactionManager.getTransaction(def);
 
         try {
             String sqlTakeMoney = "update gnomes set gnome_money=gnome_money+?"
@@ -110,19 +117,20 @@ public class TemplatesBig {
             String sqlDeleteSales = "delete from sales where item_id=? and gnome_id=?";
             jdbcTemplate.update(sqlDeleteSales, item_id, gnome_id);
 
-            transactionManager.commit(status);
+//            transactionManager.commit(status);
 
 
         }catch (DataAccessException dae){
             System.out.println("Error in creating record, rolling back");
-            transactionManager.rollback(status);
+//            transactionManager.rollback(status);
             throw dae;
         }
     }
 
+    @Transactional
     public void sellItemOld(String gnome_id, String item_id, BigDecimal itemPrice) {
-        TransactionDefinition def = new DefaultTransactionDefinition();
-        TransactionStatus status = transactionManager.getTransaction(def);
+//        TransactionDefinition def = new DefaultTransactionDefinition();
+//        TransactionStatus status = transactionManager.getTransaction(def);
 
         try {
             String sqlDecQuantity = "update sales set quantity=quantity-1 where gnome_id=?"
@@ -133,11 +141,11 @@ public class TemplatesBig {
                     + " where gnome_id=?";
             jdbcTemplate.update(sqlTakeMoney, itemPrice, gnome_id);
 
-            transactionManager.commit(status);
+//            transactionManager.commit(status);
 
         } catch (DataAccessException dae) {
             System.out.println("Error in creating record, rolling back");
-            transactionManager.rollback(status);
+//            transactionManager.rollback(status);
             throw dae;
         }
     }
