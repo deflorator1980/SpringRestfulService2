@@ -1,4 +1,4 @@
-package hello_big;
+package dao;
 
 /**
  * Created by a on 01.11.15.

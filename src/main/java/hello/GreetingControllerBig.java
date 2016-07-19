@@ -1,5 +1,6 @@
-package hello_big;
+package hello;
 
+import dao.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.security.core.context.SecurityContextHolder;

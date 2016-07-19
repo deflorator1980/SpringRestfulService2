@@ -1,4 +1,4 @@
-package hello_big;
+package dao;
 
 public class ValuesBig {
     private String gnome_name;

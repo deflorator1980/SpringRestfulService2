@@ -1,5 +1,6 @@
-package hello_big;
+package hello;
 
+import dao.ValuesGnomeBig;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

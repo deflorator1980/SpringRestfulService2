@@ -1,5 +1,9 @@
-package hello_big;
+package hello;
 
+import dao.BaughtItemBig;
+import dao.MoneyBig;
+import dao.ValuesGnomeBig;
+import dao.ValuesItemBig;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
