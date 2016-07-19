@@ -15,7 +15,7 @@
               <property name="dataSource"  ref="dataSource" />
        </bean>
 
-       <bean id="TemplatesBig" class="hello_big.TemplatesBig">
+       <bean id="TemplatesBig" class="hello.TemplatesBig">
               <property name="dataSource" ref="dataSource"/>
               <property name="transactionManager" ref="transactionManager" />
        </bean>
