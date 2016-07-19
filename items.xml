@@ -1,0 +1,16 @@
+<weapons>
+    <weapon id="01">
+        <name>sword</name>
+        <price>10</price>
+    </weapon>
+
+    <weapon id="02">
+        <name>spear</name>
+        <price>4</price>
+    </weapon>
+
+    <weapon id="03">
+        <name>grenade</name>
+        <price>2</price>
+    </weapon>
+</weapons>
