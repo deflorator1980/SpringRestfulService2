@@ -14,13 +14,22 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
     public class WebSecurityConfigBig extends WebSecurityConfigurerAdapter{
 
-    @Value("${user1.login")
+//    @Value("${user1.login")
+//    String user1Login;
+//
+//    @Value("${user2.login")
+//    String user2Login;
+//
+//    @Value("${user3.login")
+//    String user3Login;
+
+    @Value("${user1}")
     String user1Login;
 
-    @Value("${user2.login")
+    @Value("${user2}")
     String user2Login;
 
-    @Value("${user3.login")
+    @Value("${user3}")
     String user3Login;
 
     @Value("${user1.password}")
@@ -54,17 +63,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
         System.out.println(user1Pass);
         auth
                 .inMemoryAuthentication()
-//                .withUser("001").password("b").roles("USER")
-//                .withUser(user1Login).password(user1Pass).roles("USER")
-                .withUser("001").password(user1Pass).roles("USER")
+                .withUser(user1Login).password(user1Pass).roles("USER")
                 .and()
-//                .withUser("002").password("a").roles("USER")
-//                .withUser(user2Login).password(user2Pass).roles("USER")
-                .withUser("002").password(user2Pass).roles("USER")
+                .withUser(user2Login).password(user2Pass).roles("USER")
                 .and()
-//                .withUser("003").password("a").roles("USER");
-//                .withUser(user3Login).password(user3Pass).roles("USER");
-                .withUser("003").password(user3Pass).roles("USER");
+                .withUser(user3Login).password(user3Pass).roles("USER");
 
 
 
