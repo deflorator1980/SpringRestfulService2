@@ -17,6 +17,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
     @Value("${user1.login")
     String user1Login;
 
+    @Value("${user2.login")
+    String user2Login;
+
+    @Value("${user3.login")
+    String user3Login;
+
     @Value("${user1.password}")
     String user1Pass;
 
@@ -49,12 +55,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
         auth
                 .inMemoryAuthentication()
 //                .withUser("001").password("b").roles("USER")
+//                .withUser(user1Login).password(user1Pass).roles("USER")
                 .withUser("001").password(user1Pass).roles("USER")
                 .and()
 //                .withUser("002").password("a").roles("USER")
+//                .withUser(user2Login).password(user2Pass).roles("USER")
                 .withUser("002").password(user2Pass).roles("USER")
                 .and()
 //                .withUser("003").password("a").roles("USER");
+//                .withUser(user3Login).password(user3Pass).roles("USER");
                 .withUser("003").password(user3Pass).roles("USER");
 
 
