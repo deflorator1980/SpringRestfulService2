@@ -9,19 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-//@EnableWebMvcSecurity
 @EnableWebSecurity
     public class WebSecurityConfigBig extends WebSecurityConfigurerAdapter{
-
-//    @Value("${user1.login")
-//    String user1Login;
-//
-//    @Value("${user2.login")
-//    String user2Login;
-//
-//    @Value("${user3.login")
-//    String user3Login;
 
     @Value("${user1.login}")
     String user1Login;

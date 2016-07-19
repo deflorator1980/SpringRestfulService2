@@ -1,16 +1,12 @@
 package dao;
 
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 
+@Data
 public class MoneyBig {
    private BigDecimal rubles;
 
-    public BigDecimal getRubles() {
-        return rubles;
-    }
-
-    public void setRubles(BigDecimal rubles) {
-        this.rubles = rubles;
-    }
 }

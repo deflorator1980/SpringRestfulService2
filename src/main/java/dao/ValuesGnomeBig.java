@@ -1,27 +1,15 @@
 package dao;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 
 /**
  * Created by a on 01.11.15.
  */
+@Data
 public class ValuesGnomeBig {
     private String gnome_name;
     private BigDecimal gnome_money;
 
-    public String getGnome_name() {
-        return gnome_name;
-    }
-
-    public void setGnome_name(String gnome_name) {
-        this.gnome_name = gnome_name;
-    }
-
-    public BigDecimal getGnome_money() {
-        return gnome_money;
-    }
-
-    public void setGnome_money(BigDecimal gnome_money) {
-        this.gnome_money = gnome_money;
-    }
 }
