@@ -23,13 +23,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 //    @Value("${user3.login")
 //    String user3Login;
 
-    @Value("${user1}")
+    @Value("${user1.login}")
     String user1Login;
 
-    @Value("${user2}")
+    @Value("${user2.login}")
     String user2Login;
 
-    @Value("${user3}")
+    @Value("${user3.login}")
     String user3Login;
 
     @Value("${user1.password}")
