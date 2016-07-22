@@ -1,5 +1,7 @@
 package hello;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
 import dao.BaughtItemBig;
 import dao.MoneyBig;
 import dao.ValuesGnomeBig;
@@ -24,6 +26,7 @@ import java.util.List;
  */
 @Repository
 @Transactional
+@Slf4j
 public class TemplatesBig {
 
     @Autowired
@@ -66,7 +69,7 @@ public class TemplatesBig {
             jdbcTemplate.update(sqlGetItem, gnome_id, item_id);
 
         } catch (Exception dae) {
-            System.out.println("Error in creating record, rolling back");
+            log.error("Error in creating record, rolling back");
             dae.printStackTrace();
             throw dae;
         }
@@ -81,7 +84,7 @@ public class TemplatesBig {
                     + " and item_id=?";
             jdbcTemplate.update(sqlIncQuantity, gnome_id, item_id);
 
-//            error();
+            error();
 
             String sqlGiveMoney = "UPDATE gnomes SET gnome_money=gnome_money-?"
                     + " WHERE gnome_id=?";
@@ -89,7 +92,7 @@ public class TemplatesBig {
 
 
         } catch (Exception dae) {
-            System.out.println("Error in creating record, rolling back");
+            log.error("Error in creating record, rolling back");
             dae.printStackTrace();
             throw dae;
         }
@@ -113,7 +116,7 @@ public class TemplatesBig {
             jdbcTemplate.update(sqlDeleteSales, item_id, gnome_id);
 
         }catch (Exception dae){
-            System.out.println("Error in creating record, rolling back");
+            log.error("Error in creating record, rolling back");
             dae.printStackTrace();
             throw dae;
         }
@@ -135,7 +138,7 @@ public class TemplatesBig {
 
 
         } catch (Exception dae) {
-            System.out.println("Error in creating record, rolling back");
+            log.error("Error in creating record, rolling back");
             dae.printStackTrace();
             throw dae;
         }
