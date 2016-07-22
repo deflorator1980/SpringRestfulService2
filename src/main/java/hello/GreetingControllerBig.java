@@ -1,6 +1,7 @@
 package hello;
 
 import dao.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,8 +32,8 @@ public class GreetingControllerBig {
 
     private String gnome_id;
 
-    ApplicationContext ac = new FileSystemXmlApplicationContext("db.xml");
-    TemplatesBig templates = (TemplatesBig) ac.getBean("TemplatesBig");
+    @Autowired
+    TemplatesBig templates;
 
     private Node weapons;
     private Document doc;
@@ -108,7 +109,12 @@ public class GreetingControllerBig {
 
         for (BaughtItemBig bi : lbi) {
             if (bi.getItem().equals(item_id)) {
-                templates.buyItemOld(gnome_id, item_id, itemPice);
+                try {
+                    templates.buyItemOld(gnome_id, item_id, itemPice);
+                } catch (Exception e) {
+                    b.setError_code("Server error");
+                    return b;
+                }
                 b.setItem_name(item_id);
                 b.setError_code("OK");
                 return b;
