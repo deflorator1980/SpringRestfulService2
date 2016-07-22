@@ -41,27 +41,6 @@ public class TemplatesBig {
         return jdbcTemplate.query(sql, new MappersItemBig(), gnome_id);
     }
 
-
-    @Transactional
-    public void buyItemNew(String gnome_id, String item_id, BigDecimal itemPrice) {
-
-        try {
-
-            String sqlGiveMoney = "UPDATE gnomes SET gnome_money=gnome_money-? WHERE gnome_id=?";
-            jdbcTemplate.update(sqlGiveMoney, itemPrice, gnome_id);
-
-            String sqlGetItem = "insert into sales (gnome_id, item_id, quantity) values (?, ?, 1);";
-            jdbcTemplate.update(sqlGetItem, gnome_id, item_id);
-
-
-        } catch (DataAccessException dae) {
-            System.out.println("Error in creating record, rolling back");
-            throw dae;
-        }
-
-    }
-
-
     public MoneyBig getMoney(String gnome_id) {
         String sql = "SELECT gnome_money FROM gnomes WHERE gnome_id = ?";
         return (MoneyBig) jdbcTemplate.queryForObject(sql, new Object[]{gnome_id}, new MapperMoneyBig());
@@ -70,6 +49,28 @@ public class TemplatesBig {
     public List<BaughtItemBig> getBaughtItem(String gnome_id) {
         String sql = "select item_id, quantity from sales where gnome_id=?";
         return jdbcTemplate.query(sql, new MapperBaughtItemBig(), gnome_id);
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public void buyItemNew(String gnome_id, String item_id, BigDecimal itemPrice) throws Exception {
+
+        try {
+
+            String sqlGiveMoney = "UPDATE gnomes SET gnome_money=gnome_money-? WHERE gnome_id=?";
+            jdbcTemplate.update(sqlGiveMoney, itemPrice, gnome_id);
+
+//            error();
+
+            String sqlGetItem = "insert into sales (gnome_id, item_id, quantity) values (?, ?, 1);";
+            jdbcTemplate.update(sqlGetItem, gnome_id, item_id);
+
+        } catch (Exception dae) {
+            System.out.println("Error in creating record, rolling back");
+            dae.printStackTrace();
+            throw dae;
+        }
+
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -98,40 +99,44 @@ public class TemplatesBig {
         throw new Exception();
     }
 
-    @Transactional
-    public void sellItemLast(String gnome_id, String item_id, BigDecimal itemPrice) {
+    @Transactional(rollbackFor = Exception.class)
+    public void sellItemLast(String gnome_id, String item_id, BigDecimal itemPrice) throws Exception {
 
         try {
             String sqlTakeMoney = "update gnomes set gnome_money=gnome_money+?"
                     + " where gnome_id=?";
             jdbcTemplate.update(sqlTakeMoney, itemPrice, gnome_id);
 
+//            error();
+
             String sqlDeleteSales = "delete from sales where item_id=? and gnome_id=?";
             jdbcTemplate.update(sqlDeleteSales, item_id, gnome_id);
 
-
-
-        }catch (DataAccessException dae){
+        }catch (Exception dae){
             System.out.println("Error in creating record, rolling back");
+            dae.printStackTrace();
             throw dae;
         }
     }
 
-    @Transactional
-    public void sellItemOld(String gnome_id, String item_id, BigDecimal itemPrice) {
+    @Transactional(rollbackFor = Exception.class)
+    public void sellItemOld(String gnome_id, String item_id, BigDecimal itemPrice) throws Exception {
 
         try {
             String sqlDecQuantity = "update sales set quantity=quantity-1 where gnome_id=?"
                     + " and item_id=?";
             jdbcTemplate.update(sqlDecQuantity, gnome_id, item_id);
 
+//            error();
+
             String sqlTakeMoney = "update gnomes set gnome_money=gnome_money+?"
                     + " where gnome_id=?";
             jdbcTemplate.update(sqlTakeMoney, itemPrice, gnome_id);
 
 
-        } catch (DataAccessException dae) {
+        } catch (Exception dae) {
             System.out.println("Error in creating record, rolling back");
+            dae.printStackTrace();
             throw dae;
         }
     }

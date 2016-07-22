@@ -48,8 +48,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 //    @Autowired
 //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        System.out.println(user1Login);
-        System.out.println(user1Pass);
         auth
                 .inMemoryAuthentication()
                 .withUser(user1Login).password(user1Pass).roles("USER")

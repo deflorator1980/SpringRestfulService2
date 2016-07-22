@@ -46,9 +46,9 @@ public class GreetingControllerBig {
 
     public GreetingControllerBig() {
 
-        try{
+        try {
             shopList = getItemsList();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -111,19 +111,24 @@ public class GreetingControllerBig {
             if (bi.getItem().equals(item_id)) {
                 try {
                     templates.buyItemOld(gnome_id, item_id, itemPice);
+                    b.setItem_name(item_id);
+                    b.setError_code("OK");
+                    return b;
                 } catch (Exception e) {
                     b.setError_code("Server error");
                     return b;
                 }
-                b.setItem_name(item_id);
-                b.setError_code("OK");
-                return b;
             }
         }
-        templates.buyItemNew(gnome_id, item_id, itemPice);
-        b.setItem_name(item_id);
-        b.setError_code("OK");
-        return b;
+        try {
+            templates.buyItemNew(gnome_id, item_id, itemPice);
+            b.setItem_name(item_id);
+            b.setError_code("OK");
+            return b;
+        } catch (Exception e) {
+            b.setError_code("Server error");
+            return b;
+        }
     }
 
     @RequestMapping("/sell")
@@ -148,15 +153,25 @@ public class GreetingControllerBig {
             quantity = bi.getQuantity();
             item = bi.getItem();
             if (item.equals(item_id) && (quantity > 1)) {
-                templates.sellItemOld(gnome_id, item_id, itemPice);
-                b.setItem_name(item_id);
-                b.setError_code("OK");
-                return b;
+                try {
+                    templates.sellItemOld(gnome_id, item_id, itemPice);
+                    b.setItem_name(item_id);
+                    b.setError_code("OK");
+                    return b;
+                } catch (Exception e) {
+                    b.setError_code("Server error");
+                    return b;
+                }
             } else if (item.equals(item_id) && quantity == 1) {
-                templates.sellItemLast(gnome_id, item_id, itemPice);
-                b.setItem_name(item_id);
-                b.setError_code("OK");
-                return b;
+                try {
+                    templates.sellItemLast(gnome_id, item_id, itemPice);
+                    b.setItem_name(item_id);
+                    b.setError_code("OK");
+                    return b;
+                } catch (Exception e) {
+                    b.setError_code("Server error");
+                    return b;
+                }
             }
         }
         b.setError_code("You haven't this item");
