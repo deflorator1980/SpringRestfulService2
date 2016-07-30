@@ -15,7 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ApplicationBig.class)
-public class TemplatesTest {
+public class TemplatesJdbc {
 
     @Autowired TemplatesBig templatesBig;
 
