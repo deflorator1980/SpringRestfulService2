@@ -1,5 +1,6 @@
 package jpa;
 
+import hello.TemplatesBig;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.CreditCardNumber;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,15 @@ public class AppJpa implements CommandLineRunner {
         SpringApplication.run(AppJpa.class, args);
     }
 
-
     @Autowired RepaGnomes repaGnomes;
 
     @Override
     public void run(String... strings) throws Exception {
-        System.out.println(repaGnomes.findOne("003"));
-        for (Gnomes g : repaGnomes.findAll()){
-            System.out.println(g);
-        }
-        System.out.println("hui");
+//        System.out.println(repaGnomes.findOne("003"));
+//        for (Gnomes g : repaGnomes.findAll()){
+//               System.out.println(g);
+//        }
+//        System.out.println("hui");
     }
 
 }
