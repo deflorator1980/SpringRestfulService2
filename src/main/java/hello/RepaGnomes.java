@@ -1,4 +1,4 @@
-package jpa;
+package hello;
 
 import org.springframework.data.repository.CrudRepository;
 

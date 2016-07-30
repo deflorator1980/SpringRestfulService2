@@ -1,7 +1,6 @@
-import hello.ApplicationBig;
-import jpa.AppJpa;
-import jpa.Gnomes;
-import jpa.RepaGnomes;
+import hello.AppJpa;
+import hello.Gnomes;
+import hello.RepaGnomes;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
