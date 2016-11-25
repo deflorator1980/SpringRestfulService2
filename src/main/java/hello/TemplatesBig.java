@@ -84,7 +84,7 @@ public class TemplatesBig {
                     + " and item_id=?";
             jdbcTemplate.update(sqlIncQuantity, gnome_id, item_id);
 
-            error();
+//            error();
 
             String sqlGiveMoney = "UPDATE gnomes SET gnome_money=gnome_money-?"
                     + " WHERE gnome_id=?";
