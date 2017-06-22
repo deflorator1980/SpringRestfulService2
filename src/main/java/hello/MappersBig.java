@@ -1,6 +1,6 @@
 package hello;
 
-import dao.ValuesBig;
+import dto.ValuesBig;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

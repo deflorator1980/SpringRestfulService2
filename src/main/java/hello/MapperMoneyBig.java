@@ -1,6 +1,6 @@
 package hello;
 
-import dao.MoneyBig;
+import dto.MoneyBig;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

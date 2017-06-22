@@ -1,14 +1,15 @@
-package dao;
+package dto;
 
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 
+/**
+ * Created by a on 01.11.15.
+ */
 @Data
-public class ValuesMapBig {
+public class ValuesGnomeBig {
     private String gnome_name;
     private BigDecimal gnome_money;
-    private HashMap<String, Integer> items;
 
- }
+}

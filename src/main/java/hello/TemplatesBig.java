@@ -1,23 +1,15 @@
 package hello;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import dao.BaughtItemBig;
-import dao.MoneyBig;
-import dao.ValuesGnomeBig;
-import dao.ValuesItemBig;
+import dto.BaughtItemBig;
+import dto.MoneyBig;
+import dto.ValuesGnomeBig;
+import dto.ValuesItemBig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.util.List;
 
