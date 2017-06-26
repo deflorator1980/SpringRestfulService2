@@ -5,10 +5,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @SpringBootApplication
 public class ApplicationBig implements CommandLineRunner{
+    private static final Logger log = LoggerFactory.getLogger(ApplicationBig.class);
+
     public static void main(String[] args) {
         SpringApplication.run(ApplicationBig.class, args);
     }
@@ -38,6 +42,8 @@ public class ApplicationBig implements CommandLineRunner{
                 ")");
         jdbcTemplate.execute("ALTER TABLE sales ADD CONSTRAINT fk_sales_gnomes FOREIGN KEY (gnome_id) REFERENCES gnomes (gnome_id)");
         jdbcTemplate.execute("ALTER TABLE sales ADD CONSTRAINT fk_sales_items FOREIGN KEY (item_id) REFERENCES items (item_id)");
+        jdbcTemplate.execute("INSERT INTO gnomes (gnome_id, gnome_name, gnome_money) VALUES ('001', 'vova', '10')");
+        jdbcTemplate.execute("INSERT INTO gnomes (gnome_id, gnome_name, gnome_money) VALUES ('002', 'dasha', '1')");
         jdbcTemplate.execute("INSERT INTO gnomes (gnome_id, gnome_name, gnome_money) VALUES ('003', 'yasha', '100')");
         jdbcTemplate.execute("INSERT INTO items (item_id, item_name, item_price) VALUES ('01', 'sword', 10)");
         jdbcTemplate.execute("INSERT INTO items (item_id, item_name, item_price) VALUES ('02', 'spear', 4)");
