@@ -20,15 +20,7 @@ public class App {
     public CommandLineRunner my(GnomeRepository repository) {
 
         return (args) -> {
-//            Gnome gnome = new Gnome("001", "vova", new BigDecimal(10));
-
-
-//            repository.save(new Huyastomer("Jack", "Bauer"));
-//            repository.save(new Huyastomer("Chloe", "O'Brian"));
-//            repository.save(new Huyastomer("Kim", "Bauer"));
-//            repository.save(new Huyastomer("David", "Palmer"));
-//            repository.save(new Huyastomer("Michelle", "Dessler"));
-            repository.save(new Gnome("one1", "one2"));
+            repository.save(new Gnome("001", "vova", new BigDecimal(10)));
             repository.findAll().forEach(System.out::println);
         };
     }
