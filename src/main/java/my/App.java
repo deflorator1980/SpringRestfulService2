@@ -36,4 +36,12 @@ public class App {
             repository.findAll().forEach(System.out::println);
         };
     }
+
+    @Bean
+    public CommandLineRunner sales(SaleRepository repository) {
+        return (args) -> {
+            repository.save(new Sale("001", "01", 1));
+            repository.findAll().forEach(System.out::println);
+        };
+    }
 }
