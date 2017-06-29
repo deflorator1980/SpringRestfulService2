@@ -11,6 +11,7 @@ import java.math.BigDecimal;
  * Created by a on 28.06.17.
  */
 
+//@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
