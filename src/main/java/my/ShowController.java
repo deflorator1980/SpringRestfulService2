@@ -4,6 +4,8 @@ package my;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,27 +32,22 @@ public class ShowController {
 
     @RequestMapping("/gnome")
     public Gnome gnome() {
-        Gnome gnome = gnomeRepository.findOne("003");
-        log.info(gnome.getGnomeMoney().toString());
-        return gnome;
+        String gnomeId = "003";
+        return gnomeRepository.findOne(gnomeId);
     }
 
     @Transactional
     @RequestMapping("/buy")
-    public Gnome buy(@RequestParam(value = "item_id") String item_id) {
+    public ResponseEntity<?> buy(@RequestParam(value = "item_id") String itemId) {
         Sale sale;
         Gnome gnome = gnomeRepository.findOne("003");
-        Item item = itemRepository.findOne(item_id);
+        Item item = itemRepository.findOne(itemId);
         if (gnome.getGnomeMoney().compareTo(item.getItemPrice()) == -1) {
-            return new Gnome("TOO", "FEW MONEY", gnome.getGnomeMoney());
+            return new ResponseEntity<>(new Gnome(gnome.getGnomeId(), "NOT ENAUGH MONEY", gnome.getGnomeMoney()), HttpStatus.BAD_REQUEST);
         }
         gnome.setGnomeMoney(gnome.getGnomeMoney().subtract(item.getItemPrice()));
         gnomeRepository.save(gnome);
-        log.info(gnome.getGnomeMoney().toString());
 
-//        Sale sale = saleRepository.findOne(1);
-//        Sale sale = saleRepository.findByGnomeId("003");
-//        Sale sale = saleRepository.findByGnomeIdAndItemId("003", item.getItemId());
         Optional<Sale> saleOp = saleRepository.findByGnomeIdAndItemId("003", item.getItemId());
         if (saleOp.isPresent()) {
             sale = saleOp.get();
@@ -58,16 +55,29 @@ public class ShowController {
             int quant = sale.getQuantity();
             sale.setQuantity(++quant);
             saleRepository.save(sale);
-            log.info(sale.toString());
-            log.info(saleRepository.findAll().toString());
-            return gnome;
+            return new ResponseEntity<>(gnome, HttpStatus.OK);
         } else {
             sale = new Sale(gnome.getGnomeId(), item.getItemId(), 1);
         }
         saleRepository.save(sale);
-        log.info(sale.toString());
-        log.info(saleRepository.findAll().toString());
-        return gnome;
+        return new ResponseEntity<>(gnome, HttpStatus.OK);
+    }
+
+    @Transactional
+    @RequestMapping("/sell")
+    public ResponseEntity<?> sell(@RequestParam(value = "item_id") String itemId) {
+        String gnomeId = "003";
+        Sale sale;
+        Gnome gnome = gnomeRepository.findOne(gnomeId);
+        Item item = itemRepository.findOne(itemId);
+        Optional<Sale> saleOp = saleRepository.findByGnomeIdAndItemId(gnomeId, item.getItemId());
+        if (!saleOp.isPresent() || saleOp.get().getQuantity() < 1) {
+            return new ResponseEntity<Object>( new Sale("NO SUCH ITEM", item.getItemId(), 0), HttpStatus.BAD_REQUEST);
+        }
+        sale = saleOp.get();
+        gnome.setGnomeMoney(gnome.getGnomeMoney().add(item.getItemPrice()));
+        sale.setQuantity(sale.getQuantity() - 1);
+        return new ResponseEntity<Object>(gnome, HttpStatus.OK);
     }
 
     @RequestMapping("/gnomes")
