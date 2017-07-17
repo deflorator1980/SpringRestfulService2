@@ -5,8 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,9 @@ public class ShowController {
     @Autowired
     SaleRepository saleRepository;
 
+    @Autowired
+    ItemRepository itemRepository;
+
     @RequestMapping("/gnome")
     public Gnome gnome() {
         Gnome gnome = gnomeRepository.findOne("003");
@@ -30,18 +34,20 @@ public class ShowController {
         return gnome;
     }
 
+    @Transactional
     @RequestMapping("/buy")
-    public Gnome buy() {
+    public Gnome buy(@RequestParam(value = "item_id") String item_id) {
         Gnome gnome = gnomeRepository.findOne("003");
-        gnome.setGnome_money(new BigDecimal(200));
+        Item item = itemRepository.findOne(item_id);
+        gnome.setGnome_money(gnome.getGnome_money().subtract(item.getItem_price()));
         gnomeRepository.save(gnome);
         log.info(gnome.getGnome_money().toString());
         Sale sale = saleRepository.findOne(1);
         sale.setGnome_id(gnome.getGnome_id());
         int quant = sale.getQuantity();
-        sale.setQuantity(quant+1);
+        sale.setQuantity(1);
         saleRepository.save(sale);
-//        log.info(sale.toString());
+        log.info(sale.toString());
         log.info(saleRepository.findAll().toString());
         return gnome;
     }
