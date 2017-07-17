@@ -1,12 +1,6 @@
 package my;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.hibernate.engine.internal.Cascade;
-
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 /**
  * Created by a on 28.06.17.
@@ -19,26 +13,26 @@ import java.math.BigDecimal;
 public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer sale_id;
+    private Integer saleId;
 //    @OneToOne
-//    @JoinColumn(name = "gnome_id")
-    private String gnome_id;
+//    @JoinColumn(name = "gnomeId")
+    private String gnomeId;
 //    @OneToOne
-//    @JoinColumn(name = "item_id")
-    private String item_id;
+//    @JoinColumn(name = "itemId")
+    private String itemId;
     private Integer quantity;
 
-//    @OneToOne(mappedBy = "gnome_id")
+//    @OneToOne(mappedBy = "gnomeId")
 //    @OneToOne(cascade = CascadeType.ALL)
 //    @OneToOne
-//    @JoinColumn(name = "gnome_id")
+//    @JoinColumn(name = "gnomeId")
 //    private Gnome gnome;
 
 
-//    @OneToOne(mappedBy = "gnome_id")
+//    @OneToOne(mappedBy = "gnomeId")
 //    @OneToOne(cascade = CascadeType.ALL)
 //    @OneToOne
-//    @JoinColumn(name = "item_id")
+//    @JoinColumn(name = "itemId")
 //    private Item item;
 
 
@@ -46,37 +40,37 @@ public class Sale {
     }
 
     public Sale(String gnome_id, String item_id, Integer quantity) {
-        this.gnome_id = gnome_id;
-        this.item_id = item_id;
+        this.gnomeId = gnome_id;
+        this.itemId = item_id;
         this.quantity = quantity;
     }
 
-    public Integer getSale_id() {
-        return sale_id;
+    public Integer getSaleId() {
+        return saleId;
     }
 
-    public void setSale_id(Integer sale_id) {
-        this.sale_id = sale_id;
+    public void setSaleId(Integer saleId) {
+        this.saleId = saleId;
     }
 
     @OneToOne
     @JoinColumn(name = "gnome_id")
-    public String getGnome_id() {
-        return gnome_id;
+    public String getGnomeId() {
+        return gnomeId;
     }
 
-    public void setGnome_id(String gnome_id) {
-        this.gnome_id = gnome_id;
+    public void setGnomeId(String gnomeId) {
+        this.gnomeId = gnomeId;
     }
 
     @OneToOne
     @JoinColumn(name = "item_id")
-    public String getItem_id() {
-        return item_id;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setItem_id(String item_id) {
-        this.item_id = item_id;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public Integer getQuantity() {
@@ -90,9 +84,9 @@ public class Sale {
     @Override
     public String toString() {
         return "Sale{" +
-                "sale_id=" + sale_id +
-                ", gnome_id='" + gnome_id + '\'' +
-                ", item_id='" + item_id + '\'' +
+                "saleId=" + saleId +
+                ", gnomeId='" + gnomeId + '\'' +
+                ", itemId='" + itemId + '\'' +
                 ", quantity=" + quantity +
                 '}';
     }

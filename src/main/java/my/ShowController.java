@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.transaction.annotation.Transactional;
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class ShowController {
     @RequestMapping("/gnome")
     public Gnome gnome() {
         Gnome gnome = gnomeRepository.findOne("003");
-        log.info(gnome.getGnome_money().toString());
+        log.info(gnome.getGnomeMoney().toString());
         return gnome;
     }
 
@@ -39,11 +39,12 @@ public class ShowController {
     public Gnome buy(@RequestParam(value = "item_id") String item_id) {
         Gnome gnome = gnomeRepository.findOne("003");
         Item item = itemRepository.findOne(item_id);
-        gnome.setGnome_money(gnome.getGnome_money().subtract(item.getItem_price()));
+        gnome.setGnomeMoney(gnome.getGnomeMoney().subtract(item.getItemPrice()));
         gnomeRepository.save(gnome);
-        log.info(gnome.getGnome_money().toString());
-        Sale sale = saleRepository.findOne(1);
-        sale.setGnome_id(gnome.getGnome_id());
+        log.info(gnome.getGnomeMoney().toString());
+//        Sale sale = saleRepository.findOne(1);
+        Sale sale = saleRepository.findByGnomeId("003");
+        sale.setGnomeId(gnome.getGnomeId());
         int quant = sale.getQuantity();
         sale.setQuantity(1);
         saleRepository.save(sale);
