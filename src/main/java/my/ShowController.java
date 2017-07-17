@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ShowController {
@@ -37,16 +38,29 @@ public class ShowController {
     @Transactional
     @RequestMapping("/buy")
     public Gnome buy(@RequestParam(value = "item_id") String item_id) {
+        Sale sale;
         Gnome gnome = gnomeRepository.findOne("003");
         Item item = itemRepository.findOne(item_id);
         gnome.setGnomeMoney(gnome.getGnomeMoney().subtract(item.getItemPrice()));
         gnomeRepository.save(gnome);
         log.info(gnome.getGnomeMoney().toString());
+
 //        Sale sale = saleRepository.findOne(1);
-        Sale sale = saleRepository.findByGnomeId("003");
-        sale.setGnomeId(gnome.getGnomeId());
-        int quant = sale.getQuantity();
-        sale.setQuantity(1);
+//        Sale sale = saleRepository.findByGnomeId("003");
+//        Sale sale = saleRepository.findByGnomeIdAndItemId("003", item.getItemId());
+        Optional<Sale> saleOp = saleRepository.findByGnomeIdAndItemId("003", item.getItemId());
+        if (saleOp.isPresent()) {
+            sale = saleOp.get();
+            sale.setGnomeId(gnome.getGnomeId());
+            int quant = sale.getQuantity();
+            sale.setQuantity(++quant);
+            saleRepository.save(sale);
+            log.info(sale.toString());
+            log.info(saleRepository.findAll().toString());
+            return gnome;
+        } else {
+            sale = new Sale(gnome.getGnomeId(), item.getItemId(), 1);
+        }
         saleRepository.save(sale);
         log.info(sale.toString());
         log.info(saleRepository.findAll().toString());

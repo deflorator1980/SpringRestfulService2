@@ -39,9 +39,9 @@ public class Sale {
     public Sale() {
     }
 
-    public Sale(String gnome_id, String item_id, Integer quantity) {
-        this.gnomeId = gnome_id;
-        this.itemId = item_id;
+    public Sale(String gnomeId, String itemId, Integer quantity) {
+        this.gnomeId = gnomeId;
+        this.itemId = itemId;
         this.quantity = quantity;
     }
 

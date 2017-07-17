@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Item {
     @Id
-    private String item_id;
-    private String item_name;
-    private BigDecimal item_price;
+    private String itemId;
+    private String itemName;
+    private BigDecimal itemPrice;
 }
