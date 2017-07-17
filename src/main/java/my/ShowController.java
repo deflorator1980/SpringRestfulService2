@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class ShowController {
@@ -31,10 +29,28 @@ public class ShowController {
     @Autowired
     ItemRepository itemRepository;
 
+    @RequestMapping("/my-info")
+    public ResponseEntity<?> myInfo(){
+        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String gnomeId = userDetails.getUsername();
+        Gnome gnome = gnomeRepository.findOne(gnomeId);
+        Item item;
+        List<Sale> sale = saleRepository.findByGnomeId(gnomeId);
+        Info info = new Info();
+        info.setGnomeName(gnome.getGnomeName());
+        info.setGnomeMoney(gnome.getGnomeMoney());
+        Map items = new HashMap();
+        for (Sale s : sale) {
+            item = itemRepository.findOne(s.getItemId());
+            items.put(item.getItemName(), s.getQuantity());
+        }
+        info.setItems(items);
+        return new ResponseEntity<Object>(info, HttpStatus.OK);
+    }
+
     @RequestMapping("/gnome")
     public Gnome gnome() {
         UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        String gnomeId = "003";
         String gnomeId = userDetails.getUsername();
         return gnomeRepository.findOne(gnomeId);
     }
