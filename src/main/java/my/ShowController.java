@@ -41,6 +41,9 @@ public class ShowController {
         Sale sale;
         Gnome gnome = gnomeRepository.findOne("003");
         Item item = itemRepository.findOne(item_id);
+        if (gnome.getGnomeMoney().compareTo(item.getItemPrice()) == -1) {
+            return new Gnome("TOO", "FEW MONEY", gnome.getGnomeMoney());
+        }
         gnome.setGnomeMoney(gnome.getGnomeMoney().subtract(item.getItemPrice()));
         gnomeRepository.save(gnome);
         log.info(gnome.getGnomeMoney().toString());
