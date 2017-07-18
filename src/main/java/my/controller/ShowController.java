@@ -1,6 +1,8 @@
 package my.controller;
 
-
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import my.model.Gnome;
 import my.Info;
 import my.model.Item;
@@ -19,13 +21,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 
 @RestController
 public class ShowController {
 
     private static final Logger log = LoggerFactory.getLogger(ShowController.class);
+
+    private Node weapons;
+    private Document doc;
+    private String filepaht = "items.xml";
+    List<Item> shopList;
+
 
     @Autowired
     private GnomeRepository gnomeRepository;
@@ -36,9 +51,52 @@ public class ShowController {
     @Autowired
     private ItemRepository itemRepository;
 
+    private boolean shopStatus;
+
+    public ShowController() throws IOException, SAXException, ParserConfigurationException {
+        try {
+            shopList = getItemList();
+            shopStatus = true;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            shopStatus = false;
+        }
+    }
+
+    public List<Item> getItemList() throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        List<Item> itemList = new ArrayList<>();
+        doc = docBuilder.parse(filepaht);
+        weapons = doc.getElementsByTagName("weapons").item(0);
+        NodeList nodelist = weapons.getChildNodes();
+        Item item;
+        for (int i = 0; i < nodelist.getLength(); i++) {
+            Node node = nodelist.item(i);
+            if ("weapon".equals(node.getNodeName())) {
+                item = new Item();
+                item.setItemId(node.getAttributes().getNamedItem("id").getTextContent());
+                item.setItemName(((Element) node).getElementsByTagName("name").item(0).getTextContent());
+                item.setItemPrice(new BigDecimal(((Element) node).getElementsByTagName("price").item(0).getTextContent()));
+                itemList.add(item);
+            }
+        }
+        return itemList;
+    }
+
+    @RequestMapping("/view-shop")
+    public ResponseEntity<?> viewShop() {
+        if (shopStatus) {
+            return new ResponseEntity<Object>(shopList, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<Object>(new Item("SHOP DOESN'T WORK", null, null), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     @RequestMapping("/my-info")
-    public ResponseEntity<?> myInfo(){
-        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<?> myInfo() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String gnomeId = userDetails.getUsername();
         Gnome gnome = gnomeRepository.findOne(gnomeId);
         Item item;
@@ -55,20 +113,12 @@ public class ShowController {
         return new ResponseEntity<Object>(info, HttpStatus.OK);
     }
 
-    @RequestMapping("/gnome")
-    public Gnome gnome() {
-        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String gnomeId = userDetails.getUsername();
-        return gnomeRepository.findOne(gnomeId);
-    }
-
     @Transactional
     @RequestMapping("/buy")
     public ResponseEntity<?> buy(@RequestParam(value = "item_id") String itemId) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String gnomeId = userDetails.getUsername();
         Sale sale;
-//        Gnome gnome = gnomeRepository.findOne("003");
         Gnome gnome = gnomeRepository.findOne(gnomeId);
         Item item = itemRepository.findOne(itemId);
         if (gnome.getGnomeMoney().compareTo(item.getItemPrice()) == -1) {
@@ -84,42 +134,34 @@ public class ShowController {
             int quant = sale.getQuantity();
             sale.setQuantity(++quant);
             saleRepository.save(sale);
-            return new ResponseEntity<>(gnome, HttpStatus.OK);
+            return new ResponseEntity<>(item, HttpStatus.OK);
         } else {
             sale = new Sale(gnome.getGnomeId(), item.getItemId(), 1);
         }
         saleRepository.save(sale);
-        return new ResponseEntity<>(gnome, HttpStatus.OK);
+        return new ResponseEntity<>(item, HttpStatus.OK);
     }
 
     @Transactional
     @RequestMapping("/sell")
     public ResponseEntity<?> sell(@RequestParam(value = "item_id") String itemId) {
-        UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        String gnomeId = "003";
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String gnomeId = userDetails.getUsername();
         Sale sale;
         Gnome gnome = gnomeRepository.findOne(gnomeId);
         Item item = itemRepository.findOne(itemId);
         Optional<Sale> saleOp = saleRepository.findByGnomeIdAndItemId(gnomeId, item.getItemId());
         if (!saleOp.isPresent() || saleOp.get().getQuantity() < 1) {
-            return new ResponseEntity<Object>( new Sale("NO SUCH ITEM", item.getItemId(), 0), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(new Sale("NO SUCH ITEM", item.getItemId(), 0), HttpStatus.BAD_REQUEST);
         }
         sale = saleOp.get();
         gnome.setGnomeMoney(gnome.getGnomeMoney().add(item.getItemPrice()));
         sale.setQuantity(sale.getQuantity() - 1);
-        return new ResponseEntity<Object>(gnome, HttpStatus.OK);
-    }
-
-    @RequestMapping("/gnomes")
-    public List<Gnome> gnomes() {
-        List<Gnome> gnomes = new ArrayList<>();
-        gnomeRepository.findAll().forEach(gnomes::add);
-        return gnomes;
+        return new ResponseEntity<Object>(item, HttpStatus.OK);
     }
 
     @RequestMapping("/")
     public ResponseEntity<?> nihil() {
-        return new ResponseEntity<Object>(new Gnome("sdfdsf", "dsfsfda", null), HttpStatus.OK);
+        return new ResponseEntity<Object>(new Gnome("welcome", "to game", null), HttpStatus.OK);
     }
 }
