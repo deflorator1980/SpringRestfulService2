@@ -1,5 +1,5 @@
-package my;
-
+package my.repo;
+import my.model.Sale;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

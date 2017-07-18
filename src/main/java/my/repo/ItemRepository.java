@@ -1,5 +1,6 @@
-package my;
+package my.repo;
 
+import my.model.Item;
 import org.springframework.data.repository.CrudRepository;
 
 /**

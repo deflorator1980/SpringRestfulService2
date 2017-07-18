@@ -1,6 +1,13 @@
-package my;
+package my.controller;
 
 
+import my.model.Gnome;
+import my.Info;
+import my.model.Item;
+import my.model.Sale;
+import my.repo.GnomeRepository;
+import my.repo.ItemRepository;
+import my.repo.SaleRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +28,13 @@ public class ShowController {
     private static final Logger log = LoggerFactory.getLogger(ShowController.class);
 
     @Autowired
-    GnomeRepository gnomeRepository;
+    private GnomeRepository gnomeRepository;
 
     @Autowired
-    SaleRepository saleRepository;
+    private SaleRepository saleRepository;
 
     @Autowired
-    ItemRepository itemRepository;
+    private ItemRepository itemRepository;
 
     @RequestMapping("/my-info")
     public ResponseEntity<?> myInfo(){
