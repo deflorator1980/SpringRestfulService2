@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer saleId;
+    private Integer id;
     private String gnomeId;
     private String itemId;
     private Integer quantity;
@@ -24,12 +24,12 @@ public class Sale {
         this.quantity = quantity;
     }
 
-    public Integer getSaleId() {
-        return saleId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setSaleId(Integer saleId) {
-        this.saleId = saleId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getGnomeId() {
@@ -59,7 +59,7 @@ public class Sale {
     @Override
     public String toString() {
         return "Sale{" +
-                "saleId=" + saleId +
+                "id=" + id +
                 ", gnomeId='" + gnomeId + '\'' +
                 ", itemId='" + itemId + '\'' +
                 ", quantity=" + quantity +
