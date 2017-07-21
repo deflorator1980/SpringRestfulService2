@@ -36,8 +36,6 @@ public class ShowController {
 
     private static final Logger log = LoggerFactory.getLogger(ShowController.class);
 
-    private Node weapons;
-    private Document doc;
     private String filepaht = "items.xml";
     List<Item> shopList;
 
@@ -63,12 +61,12 @@ public class ShowController {
         }
     }
 
-    public List<Item> getItemList() throws ParserConfigurationException, IOException, SAXException {
+    private List<Item> getItemList() throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         List<Item> itemList = new ArrayList<>();
-        doc = docBuilder.parse(filepaht);
-        weapons = doc.getElementsByTagName("weapons").item(0);
+        Document doc = docBuilder.parse(filepaht);
+        Node weapons = doc.getElementsByTagName("weapons").item(0);
         NodeList nodelist = weapons.getChildNodes();
         Item item;
         for (int i = 0; i < nodelist.getLength(); i++) {
