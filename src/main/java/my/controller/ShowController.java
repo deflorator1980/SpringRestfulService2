@@ -157,9 +157,4 @@ public class ShowController {
         sale.setQuantity(sale.getQuantity() - 1);
         return new ResponseEntity<Object>(item, HttpStatus.OK);
     }
-
-    @RequestMapping("/sales")
-    public ResponseEntity<?> sales(){
-        return new ResponseEntity<Object>(saleRepository.findAll(), HttpStatus.OK);
-    }
 }
