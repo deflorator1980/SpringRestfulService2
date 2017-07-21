@@ -94,7 +94,7 @@ public class ShowController {
     }
 
 
-    @RequestMapping("/my-info")
+    @RequestMapping(value = {"/", "/my-info"})
     public ResponseEntity<?> myInfo() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String gnomeId = userDetails.getUsername();
@@ -158,10 +158,5 @@ public class ShowController {
         gnome.setGnomeMoney(gnome.getGnomeMoney().add(item.getItemPrice()));
         sale.setQuantity(sale.getQuantity() - 1);
         return new ResponseEntity<Object>(item, HttpStatus.OK);
-    }
-
-    @RequestMapping("/")
-    public ResponseEntity<?> nihil() {
-        return new ResponseEntity<Object>(new Gnome("welcome", "to game", null), HttpStatus.OK);
     }
 }

@@ -1,5 +1,11 @@
 package my;
 
+import my.model.Gnome;
+import my.model.Item;
+import my.model.Sale;
+import my.repo.GnomeRepository;
+import my.repo.ItemRepository;
+import my.repo.SaleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,15 +13,14 @@ import org.springframework.context.annotation.Bean;
 
 import java.math.BigDecimal;
 
-/**
- * Created by a on 28.06.17.
- */
 @SpringBootApplication
 public class App {
     public static void main(String[] args) {
         SpringApplication.run(App.class);
     }
-
+/**
+ * for  DB2
+ */
 //    @Bean
 //    public CommandLineRunner gnomes(GnomeRepository repository) {
 //
@@ -26,7 +31,7 @@ public class App {
 //            repository.findAll().forEach(System.out::println);
 //        };
 //    }
-
+//
 //    @Bean
 //    public CommandLineRunner items(ItemRepository repository) {
 //        return (args) -> {
@@ -36,7 +41,7 @@ public class App {
 //            repository.findAll().forEach(System.out::println);
 //        };
 //    }
-
+//
 //    @Bean
 //    public CommandLineRunner sales(SaleRepository repository) {
 //        return (args) -> {
