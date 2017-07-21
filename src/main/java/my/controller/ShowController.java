@@ -73,9 +73,9 @@ public class ShowController {
             Node node = nodelist.item(i);
             if ("weapon".equals(node.getNodeName())) {
                 item = new Item();
-                item.setItemId(node.getAttributes().getNamedItem("id").getTextContent());
-                item.setItemName(((Element) node).getElementsByTagName("name").item(0).getTextContent());
-                item.setItemPrice(new BigDecimal(((Element) node).getElementsByTagName("price").item(0).getTextContent()));
+                item.setId(node.getAttributes().getNamedItem("id").getTextContent());
+                item.setName(((Element) node).getElementsByTagName("name").item(0).getTextContent());
+                item.setPrice(new BigDecimal(((Element) node).getElementsByTagName("price").item(0).getTextContent()));
                 itemList.add(item);
             }
         }
@@ -100,12 +100,12 @@ public class ShowController {
         Item item;
         List<Sale> sale = saleRepository.findByGnomeId(gnomeId);
         Info info = new Info();
-        info.setGnomeName(gnome.getGnomeName());
-        info.setGnomeMoney(gnome.getGnomeMoney());
+        info.setGnomeName(gnome.getName());
+        info.setGnomeMoney(gnome.getMoney());
         Map items = new HashMap();
         for (Sale s : sale) {
             item = itemRepository.findOne(s.getItemId());
-            items.put(item.getItemName(), s.getQuantity());
+            items.put(item.getName(), s.getQuantity());
         }
         info.setItems(items);
         return new ResponseEntity<Object>(info, HttpStatus.OK);
@@ -119,22 +119,22 @@ public class ShowController {
         Sale sale;
         Gnome gnome = gnomeRepository.findOne(gnomeId);
         Item item = itemRepository.findOne(itemId);
-        if (gnome.getGnomeMoney().compareTo(item.getItemPrice()) == -1) {
-            return new ResponseEntity<>(new Gnome(gnome.getGnomeId(), "NOT ENOUGH MONEY", gnome.getGnomeMoney()), HttpStatus.BAD_REQUEST);
+        if (gnome.getMoney().compareTo(item.getPrice()) == -1) {
+            return new ResponseEntity<>(new Gnome(gnome.getId(), "NOT ENOUGH MONEY", gnome.getMoney()), HttpStatus.BAD_REQUEST);
         }
-        gnome.setGnomeMoney(gnome.getGnomeMoney().subtract(item.getItemPrice()));
+        gnome.setMoney(gnome.getMoney().subtract(item.getPrice()));
         gnomeRepository.save(gnome);
 
-        Optional<Sale> saleOp = saleRepository.findByGnomeIdAndItemId(gnomeId, item.getItemId());
+        Optional<Sale> saleOp = saleRepository.findByGnomeIdAndItemId(gnomeId, item.getId());
         if (saleOp.isPresent()) {
             sale = saleOp.get();
-            sale.setGnomeId(gnome.getGnomeId());
+            sale.setGnomeId(gnome.getId());
             int quant = sale.getQuantity();
             sale.setQuantity(++quant);
             saleRepository.save(sale);
             return new ResponseEntity<>(item, HttpStatus.OK);
         } else {
-            sale = new Sale(gnome.getGnomeId(), item.getItemId(), 1);
+            sale = new Sale(gnome.getId(), item.getId(), 1);
         }
         saleRepository.save(sale);
         return new ResponseEntity<>(item, HttpStatus.OK);
@@ -148,18 +148,13 @@ public class ShowController {
         Sale sale;
         Gnome gnome = gnomeRepository.findOne(gnomeId);
         Item item = itemRepository.findOne(itemId);
-        Optional<Sale> saleOp = saleRepository.findByGnomeIdAndItemId(gnomeId, item.getItemId());
+        Optional<Sale> saleOp = saleRepository.findByGnomeIdAndItemId(gnomeId, item.getId());
         if (!saleOp.isPresent() || saleOp.get().getQuantity() < 1) {
-            return new ResponseEntity<Object>(new Sale("NO SUCH ITEM", item.getItemId(), 0), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<Object>(new Sale("NO SUCH ITEM", item.getId(), 0), HttpStatus.BAD_REQUEST);
         }
         sale = saleOp.get();
-        gnome.setGnomeMoney(gnome.getGnomeMoney().add(item.getItemPrice()));
+        gnome.setMoney(gnome.getMoney().add(item.getPrice()));
         sale.setQuantity(sale.getQuantity() - 1);
         return new ResponseEntity<Object>(item, HttpStatus.OK);
-    }
-
-    @RequestMapping("/sales")
-    public ResponseEntity<?> sales(){
-        return new ResponseEntity<Object>(saleRepository.findAll(), HttpStatus.OK);
     }
 }

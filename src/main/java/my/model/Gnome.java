@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Gnome {
     @Id
-    private String gnomeId;
-    private String gnomeName;
-    private BigDecimal gnomeMoney;
+    private String id;
+    private String name;
+    private BigDecimal money;
 }

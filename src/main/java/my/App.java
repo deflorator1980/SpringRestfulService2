@@ -41,7 +41,7 @@ public class App {
 //            repository.findAll().forEach(System.out::println);
 //        };
 //    }
-//
+
 //    @Bean
 //    public CommandLineRunner sales(SaleRepository repository) {
 //        return (args) -> {
