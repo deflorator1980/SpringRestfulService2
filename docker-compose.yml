@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  db:
+    image: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+    volumes:
+      - /my/own/game:/var/lib/mysql
+  game:
+    build: .
+    image: deflorator1980/game
+    ports:
+      - 8080:8080
