@@ -12,5 +12,6 @@ services:
   game:
     build: .
     image: deflorator1980/game
+    network_mode: "host"
     ports:
       - 8080:8080
