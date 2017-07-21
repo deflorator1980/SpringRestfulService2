@@ -7,34 +7,13 @@ import javax.persistence.*;
  */
 
 @Entity
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
 public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer saleId;
-//    @OneToOne
-//    @JoinColumn(name = "gnomeId")
     private String gnomeId;
-//    @OneToOne
-//    @JoinColumn(name = "itemId")
     private String itemId;
     private Integer quantity;
-
-//    @OneToOne(mappedBy = "gnomeId")
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @OneToOne
-//    @JoinColumn(name = "gnomeId")
-//    private Gnome gnome;
-
-
-//    @OneToOne(mappedBy = "gnomeId")
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @OneToOne
-//    @JoinColumn(name = "itemId")
-//    private Item item;
-
 
     public Sale() {
     }
@@ -53,8 +32,6 @@ public class Sale {
         this.saleId = saleId;
     }
 
-    @OneToOne
-    @JoinColumn(name = "gnome_id")
     public String getGnomeId() {
         return gnomeId;
     }
@@ -63,8 +40,6 @@ public class Sale {
         this.gnomeId = gnomeId;
     }
 
-    @OneToOne
-    @JoinColumn(name = "item_id")
     public String getItemId() {
         return itemId;
     }
