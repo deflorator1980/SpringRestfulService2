@@ -36,22 +36,19 @@ public class ShowController {
 
     private static final Logger log = LoggerFactory.getLogger(ShowController.class);
 
-    private String filepaht = "items.xml";
-    List<Item> shopList;
+    private List<Item> shopList;
 
 
-    @Autowired
-    private GnomeRepository gnomeRepository;
+    private final GnomeRepository gnomeRepository;
 
-    @Autowired
-    private SaleRepository saleRepository;
+    private final SaleRepository saleRepository;
 
-    @Autowired
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     private boolean shopStatus;
 
-    public ShowController() throws IOException, SAXException, ParserConfigurationException {
+    @Autowired
+    public ShowController(GnomeRepository gnomeRepository, SaleRepository saleRepository, ItemRepository itemRepository) throws IOException, SAXException, ParserConfigurationException {
         try {
             shopList = getItemList();
             shopStatus = true;
@@ -59,12 +56,16 @@ public class ShowController {
             log.error(e.getMessage());
             shopStatus = false;
         }
+        this.gnomeRepository = gnomeRepository;
+        this.saleRepository = saleRepository;
+        this.itemRepository = itemRepository;
     }
 
     private List<Item> getItemList() throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         List<Item> itemList = new ArrayList<>();
+        String filepaht = "items.xml";
         Document doc = docBuilder.parse(filepaht);
         Node weapons = doc.getElementsByTagName("weapons").item(0);
         NodeList nodelist = weapons.getChildNodes();
