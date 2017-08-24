@@ -8,10 +8,11 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "root"
     volumes:
-      - /my/own/game:/var/lib/mysql
+#      - /my/own/game:/var/lib/mysql
+      - ./base/:/var/lib/mysql
   game:
     build: .
-    image: deflorator1980/game
+    image: deflorator1980/gamenginx
     network_mode: "host"
     ports:
       - 8080:8080

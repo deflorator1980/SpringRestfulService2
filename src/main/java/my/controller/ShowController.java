@@ -93,7 +93,25 @@ public class ShowController {
     }
 
 
-    @RequestMapping(value = {"/", "/my-info"})
+    @RequestMapping(value = {"/"})
+    public ResponseEntity<?> show() {
+        String gnomeId = "001";
+        Gnome gnome = gnomeRepository.findOne(gnomeId);
+        Item item;
+        List<Sale> sale = saleRepository.findByGnomeId(gnomeId);
+        Info info = new Info();
+        info.setGnomeName(gnome.getName());
+        info.setGnomeMoney(gnome.getMoney());
+        Map items = new HashMap();
+        for (Sale s : sale) {
+            item = itemRepository.findOne(s.getItemId());
+            items.put(item.getName(), s.getQuantity());
+        }
+        info.setItems(items);
+        return new ResponseEntity<Object>(info, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = {"/my-info"})
     public ResponseEntity<?> myInfo() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String gnomeId = userDetails.getUsername();

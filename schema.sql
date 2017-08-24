@@ -23,9 +23,9 @@ ALTER TABLE sale ADD CONSTRAINT fk_sale_gnome FOREIGN KEY (gnome_id) REFERENCES 
 
 ALTER TABLE sale ADD CONSTRAINT fk_sale_item FOREIGN KEY (item_id) REFERENCES item (id);
 
-INSERT INTO gnome (id, name, money) VALUES ('001', 'vova', '10');
-INSERT INTO gnome (id, name, money) VALUES ('002', 'dasha', '1');
-INSERT INTO gnome (id, name, money) VALUES ('003', 'yasha', '100');
+INSERT INTO gnome (id, name, money) VALUES ('001', 'vova1', '10');
+INSERT INTO gnome (id, name, money) VALUES ('002', 'dasha1', '1');
+INSERT INTO gnome (id, name, money) VALUES ('003', 'yasha1', '100');
 
 INSERT INTO item (id, name, price) VALUES ('01', 'sword', 10);
 INSERT INTO item (id, name, price) VALUES ('02', 'spear', 4);
