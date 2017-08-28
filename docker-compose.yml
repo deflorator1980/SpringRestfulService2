@@ -1,18 +1,47 @@
 version: '3'
 
+
 services:
-  db:
-    image: mysql
-    ports:
-      - 3306:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
-    volumes:
-#      - /my/own/game:/var/lib/mysql
-      - ./base/:/var/lib/mysql
-  game:
+  myservice:
+    image: deflorator1980/gamenginx2
     build: .
-    image: deflorator1980/gamenginx
-    network_mode: "host"
-    ports:
-      - 8080:8080
+    # ports:
+      # - 8080:8080
+  networks:
+    - web
+    - db
+  
+  networks:
+    web:
+      external:
+        name: web
+          # ports:
+            # - 8080:8080
+    db:
+      external:
+        name: db
+        image: mysql
+      ports:
+      - 3306:3306
+      environment:
+        MYSQL_ROOT_PASSWORD: "root"
+      volumes:
+#        - /my/own/game:/var/lib/mysql
+        - ./base/:/var/lib/mysql
+
+# services:
+#   db:
+#     image: mysql
+#     ports:
+#       - 3306:3306
+#     environment:
+#       MYSQL_ROOT_PASSWORD: "root"
+#     volumes:
+# #      - /my/own/game:/var/lib/mysql
+#       - ./base/:/var/lib/mysql
+#   game:
+    # build: .
+    # image: deflorator1980/gamenginx
+    # network_mode: "host"
+    # ports:
+    #   - 8080:8080
